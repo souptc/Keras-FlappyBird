@@ -14,8 +14,6 @@ import numpy as np
 from collections import deque
 
 import json
-from keras import initializations
-from keras.initializations import normal, identity
 from keras.models import model_from_json
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation, Flatten
@@ -203,9 +201,10 @@ def main():
     playGame(args)
 
 if __name__ == "__main__":
-    config = tf.ConfigProto()
-    config.gpu_options.allow_growth = True
-    sess = tf.Session(config=config)
     from keras import backend as K
-    K.set_session(sess)
+    if K.backend() == 'tensorflow':
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+        sess = tf.Session(config=config)
+        K.set_session(sess)
     main()
